@@ -1,0 +1,66 @@
+﻿@model WS_TEST_LIBRARY.Models.CoordinatesModel
+
+@{
+    ViewData["Title"] = ".NET Core Coordinates calculator";
+}
+
+<div class="text-left">
+    <h1 class="display-4">.NET Core Coordinates calculator</h1>
+    <div class="mb-3">
+        <div class="col-md-6">
+            @Html.ValidationMessage("CustomError")
+        </div>
+    </div>
+    @using (Html.BeginForm("Index", "Home", FormMethod.Post))
+    {
+        <div class="mb-3">
+            <div class="col-md-6">
+                @Html.LabelFor(m => m.MaxCoordinates)
+                @Html.TextBoxFor(m => m.MaxCoordinates, new { @class = "form-control" })
+            </div>
+        </div>
+
+        for (var i = 0; i < Model.Results.Count; i++)
+        {
+            if (i > 0)
+            {
+                <hr class="mb-3" />
+            }
+
+            <div class="mb-3">
+                <div class="col-md-6">
+                    <h4>@Html.Raw("Rover " + (i + 1))</h4>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Results[i].CurrentPosition)
+                    @Html.TextBoxFor(m => m.Results[i].CurrentPosition, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="col-md-6">
+                    @Html.LabelFor(m => m.Results[i].Movement)
+                    @Html.TextBoxFor(m => m.Results[i].Movement, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="col-md-3">
+                    @Html.LabelFor(m => m.Results[i].Result)
+                    @Html.HiddenFor(m => m.Results[i].Result)
+                </div>
+                <div class="col-md-3">
+                    @Html.DisplayFor(m => m.Results[i].Result, new { @class = "form-control" })
+                </div>
+            </div>
+        }
+        <div class="mb-3">
+            <div class="col-md-6">
+                <input id="Submit" type="submit" value="Calculate" class="btn btn-primary" />
+            </div>
+        </div>
+
+    }
+
+</div>
