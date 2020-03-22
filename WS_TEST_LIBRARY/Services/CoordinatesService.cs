@@ -36,9 +36,11 @@ namespace WS_TEST_LIBRARY.Services
 
             foreach (var chr in directions.ToCharArray())
             {
+                // Calculate next position depeing on route
                 CalculateNextPosition(chr);
             }
 
+            // return the result
             return string.Format("{0} {1} {2}", _currentPosition[0], _currentPosition[1], _currentDirection);
         }
 
@@ -70,6 +72,7 @@ namespace WS_TEST_LIBRARY.Services
                 throw new Exception("direction is missing");
             }
 
+            // set current position and direction
             SetCurrentPosition(x, y, currentDirection.ToCharArray()[0]);
         }
 
@@ -85,6 +88,7 @@ namespace WS_TEST_LIBRARY.Services
                 throw new Exception("position can be N, E, S or W");
             }
 
+            // set current position and direction
             _currentPosition = new int[2] { x, y };
             _currentDirection = direction;
         }
@@ -111,6 +115,7 @@ namespace WS_TEST_LIBRARY.Services
                 throw new Exception("x and y can't be less than or equal to 0 and must be numbers");
             }
 
+            // Set max coordinates
             SetEnd(x, y);
         }
 
@@ -121,6 +126,7 @@ namespace WS_TEST_LIBRARY.Services
                 throw new Exception("x and y coordinates have to be higher than 0");
             }
 
+            // Set max coordinates
             End = new int[2] { x, y };
         }
 
@@ -130,9 +136,11 @@ namespace WS_TEST_LIBRARY.Services
             {
                 case 'L':
                 case 'R':
+                    // Left or Right calculates next direction
                     CalculateDirection(chr);
                     break;
                 case 'M':
+                    // Move moves by 1 depending on direction
                     CalculatePosition();
                     break;
             }
@@ -143,24 +151,28 @@ namespace WS_TEST_LIBRARY.Services
             switch (_currentDirection)
             {
                 case 'N':
+                    // North adds 1 to y
                     if (_currentPosition[1] < End[1])
                     {
                         _currentPosition[1]++;
                     }
                     break;
                 case 'E':
+                    // East adds 1 to x
                     if (_currentPosition[0] < End[0])
                     {
                         _currentPosition[0]++;
                     }
                     break;
                 case 'S':
+                    // South subtracts 1 from y
                     if (_currentPosition[1] > Start[1])
                     {
                         _currentPosition[1]--;
                     }
                     break;
                 case 'W':
+                    // West subtracts 1 from x
                     if (_currentPosition[0] > Start[0])
                     {
                         _currentPosition[0]--;
@@ -182,15 +194,19 @@ namespace WS_TEST_LIBRARY.Services
                     directionIndex++;
                     break;
             }
+
+            // if less than 0 returns to last entry in the list
             if (directionIndex < 0)
             {
                 directionIndex = Directions.Count - 1;
             }
+            // if more than list length returns to first entry in the list
             else if (directionIndex > Directions.Count - 1)
             {
                 directionIndex = 0;
             }
 
+            // set current direction
             _currentDirection = Directions[directionIndex];
         }
     }
