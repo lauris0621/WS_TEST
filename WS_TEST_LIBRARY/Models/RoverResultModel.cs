@@ -2,8 +2,11 @@
 
 namespace WS_TEST_LIBRARY.Models
 {
+
     public class RoverResultModel
     {
+        public int Id { get; set; }
+
         [Display(Name = "Current Position")]
         public string CurrentPosition { get; set; }
 

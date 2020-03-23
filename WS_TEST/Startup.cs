@@ -1,8 +1,12 @@
+using JavaScriptEngineSwitcher.Extensions.MsDependencyInjection;
+using JavaScriptEngineSwitcher.V8;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using React.AspNet;
 using WS_TEST_LIBRARY.Interfaces;
 using WS_TEST_LIBRARY.Services;
 
@@ -20,6 +24,12 @@ namespace WS_TEST
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddReact();
+
+            // Make sure a JS engine is registered, or you will get an error!
+            services.AddJsEngineSwitcher(options => options.DefaultEngineName = V8JsEngine.EngineName).AddV8();
+
             services.AddControllersWithViews();
             services.AddTransient<ICoordinatesService, CoordinatesService>();
         }
@@ -35,6 +45,11 @@ namespace WS_TEST
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+            // Initialise ReactJS.NET. Must be before static files.
+            app.UseReact(config =>
+            {
+                config.AddScript("~/js/coordcalculator/calculator.jsx");
+            });
             app.UseStaticFiles();
 
             app.UseRouting();

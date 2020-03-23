@@ -12,10 +12,13 @@ namespace WS_TEST_LIBRARY.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly ICoordinatesService _coordinatesService;
 
+        private readonly IList<ReactRoverResultModel> _rovers;
+
         public HomeController(ILogger<HomeController> logger, ICoordinatesService coordinatesService)
         {
             _logger = logger;
             _coordinatesService = coordinatesService;
+            _rovers = new List<ReactRoverResultModel>();
         }
 
         public IActionResult Index()
@@ -54,6 +57,41 @@ namespace WS_TEST_LIBRARY.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult React()
+        {
+            return View();
+        }
+
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public ActionResult AddRover(int? id)
+        {
+            return Json(new ReactRoverResultModel
+            {
+                Id = id ?? 1,
+                MaxCoordinates = string.Empty,
+                CurrentPosition = string.Empty,
+                Movement = string.Empty,
+                Result = string.Empty
+            });
+        }
+
+        [HttpPost]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public ActionResult Calculate(ReactRoverResultModel rover)
+        {
+            var currentRover = rover;
+            // sets end coordinates
+            _coordinatesService.SetEnd(rover.MaxCoordinates);
+
+            // sets start position of rover
+            _coordinatesService.SetCurrentPosition(currentRover.CurrentPosition);
+
+            // calculates coordinates depending on route
+            currentRover.Result = _coordinatesService.Calculate(currentRover.Movement);
+
+            return Json(currentRover);
         }
     }
 }

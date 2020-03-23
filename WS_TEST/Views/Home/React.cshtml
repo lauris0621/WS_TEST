@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "React";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="text-left">
+    <h1 class="display-4">React calculator</h1>
+
+    <div id="content"></div>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/16.13.0/umd/react.development.js"></script>
+    <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.13.0/umd/react-dom.development.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/remarkable/1.7.1/remarkable.min.js"></script>
+    <script type="text/javascript">
+        var addRoverUrl = '@Url.Action("AddRover")';
+        var submitRoverUrl = '@Url.Action("Calculate")';
+    </script>
+    <script src="@Url.Content("~/js/coordcalculator/calculator.jsx")"></script>
+</div>
